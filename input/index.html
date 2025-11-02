@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<body>
+<h2>Form Input Data Kecamatan</h2>
+
+<form action="input.php" onsubmit="return validateForm()" method="post">
+  <label>Kecamatan:</label><br>
+  <input type="text" id="kec" name="kecamatan" required><br>
+
+  <label>Longitude:</label><br>
+  <input type="text" id="long" name="longitude" required><br>
+
+  <label>Latitude:</label><br>
+  <input type="text" id="lat" name="latitude" required><br>
+
+  <label>Luas:</label><br>
+  <input type="text" id="luas" name="luas" required><br>
+
+  <label>Jumlah Penduduk:</label><br>
+  <input type="text" id="jml" name="jumlah_penduduk" required><br><br>
+
+  <input type="submit" value="Simpan">
+</form>
+
+<p id="informasi"></p>
+
+<script>
+function validateForm() {
+  let luas = document.getElementById("luas").value;
+  let pesan = "";
+  if (isNaN(luas) || luas < 1) {
+    pesan = "⚠️ Data luas harus angka dan tidak boleh negatif";
+    event.preventDefault();
+  }
+  document.getElementById("informasi").innerHTML = pesan;
+}
+</script>
+
+<br>
+<a href="../index.php">Kembali</a>
+</body>
+</html>
