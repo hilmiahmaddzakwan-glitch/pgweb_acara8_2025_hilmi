@@ -1,24 +1,26 @@
 <?php
+$id = $_POST['id'];
 $kecamatan = $_POST['kecamatan'];
 $longitude = $_POST['longitude'];
 $latitude = $_POST['latitude'];
 $luas = $_POST['luas'];
 $jumlah_penduduk = $_POST['jumlah_penduduk'];
 
-// Koneksi database
 $conn = new mysqli("localhost", "root", "", "pgweb_acara8");
 if ($conn->connect_error) die("Koneksi gagal: " . $conn->connect_error);
 
-// Query insert
-$sql = "INSERT INTO data_kecamatan (kecamatan, longitude, latitude, luas, jumlah_penduduk)
-        VALUES ('$kecamatan', '$longitude', '$latitude', '$luas', '$jumlah_penduduk')";
+$sql = "UPDATE data_kecamatan SET 
+        kecamatan='$kecamatan', 
+        longitude='$longitude', 
+        latitude='$latitude', 
+        luas='$luas', 
+        jumlah_penduduk='$jumlah_penduduk'
+        WHERE id=$id";
 
 if ($conn->query($sql) === TRUE) {
-    // redirect ke halaman utama dengan pesan sukses
-    header("Location: ../index.php?pesan=tambah");
+    header("Location: ../index.php?pesan=berhasil");
 } else {
     echo "Error: " . $conn->error;
 }
-
 $conn->close();
 ?>

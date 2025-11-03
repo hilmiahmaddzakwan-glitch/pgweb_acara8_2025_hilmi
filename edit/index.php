@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<title>Tambah Data Kecamatan</title>
+<title>Edit Data Kecamatan</title>
 <style>
 body {
     font-family: 'Segoe UI', Arial, sans-serif;
@@ -67,33 +67,54 @@ a {
 </head>
 <body>
 
-<h2>Tambah Data Kecamatan</h2>
+<h2>Edit Data Kecamatan</h2>
 <div id="informasi"></div>
 
-<form action="input.php" method="post" onsubmit="return validateForm()">
-    <label>Kecamatan:</label>
-    <input type="text" id="kec" name="kecamatan" required>
+<?php
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "pgweb_acara8";
+$conn = new mysqli($servername, $username, $password, $dbname);
+if ($conn->connect_error) die("Koneksi gagal: " . $conn->connect_error);
 
-    <label>Longitude:</label>
-    <input type="text" id="long" name="longitude" required>
+$id = $_GET['id'];
+$sql = "SELECT * FROM data_kecamatan WHERE id = $id";
+$result = $conn->query($sql);
 
-    <label>Latitude:</label>
-    <input type="text" id="lat" name="latitude" required>
+if ($result->num_rows > 0) {
+    $row = $result->fetch_assoc();
+    echo "<form action='edit.php' method='post' onsubmit='return validateForm()'>
+            <input type='hidden' name='id' value='{$row['id']}'>
+            
+            <label>Kecamatan:</label>
+            <input type='text' name='kecamatan' value='{$row['kecamatan']}' required>
+            
+            <label>Longitude:</label>
+            <input type='text' name='longitude' value='{$row['longitude']}' required>
+            
+            <label>Latitude:</label>
+            <input type='text' name='latitude' value='{$row['latitude']}' required>
+            
+            <label>Luas:</label>
+            <input type='text' id='luas' name='luas' value='{$row['luas']}' required placeholder='contoh: 123.45 atau 123,45'>
+            
+            <label>Jumlah Penduduk:</label>
+            <input type='number' id='jml' name='jumlah_penduduk' value='{$row['jumlah_penduduk']}' required>
+            
+            <input type='submit' value='Simpan'>
+          </form>";
+} else {
+    echo "<p>Data tidak ditemukan!</p>";
+}
+$conn->close();
+?>
 
-    <label>Luas:</label>
-    <input type="text" id="luas" name="luas" required >
-
-    <label>Jumlah Penduduk:</label>
-    <input type="number" id="jml" name="jumlah_penduduk" required>
-
-    <input type="submit" value="Simpan">
-</form>
-
-<a href="../index.php">← Kembali ke Halaman Utama</a>
+<a href='../index.php'>← Kembali ke Halaman Utama</a>
 
 <script>
 function validateForm() {
-    let luas = document.getElementById("luas").value.replace(',', '.'); // ganti koma dengan titik
+    let luas = document.getElementById("luas").value.replace(',', '.');
     let jumlah = document.getElementById("jml").value;
     let msg = "";
 
